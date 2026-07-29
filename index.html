@@ -22,19 +22,8 @@
       background: #000;
       image-rendering: pixelated;
     }
-    /* Custom Scrollbar for Modal */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #0f172a;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 3px;
-    }
   </style>
-<script src="/_aistudio-iframe.js?v=1ee22f18"></script></head>
+</head>
 <body class="flex flex-col items-center justify-center min-h-screen bg-slate-950 text-slate-100">
 
   <!-- Header Control Bar -->
@@ -46,10 +35,16 @@
       </h1>
     </div>
     <div class="flex items-center gap-2">
-      <button id="btnAudioToggle" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-xs font-bold rounded-lg border border-slate-700 transition-all">
+      <button id="btnFullscreen" class="px-3 py-1 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white text-xs font-bold rounded-lg shadow-md transition-all cursor-pointer">
+        🖥️ 전체화면
+      </button>
+      <button id="btnAudioToggle" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-xs font-bold rounded-lg border border-slate-700 transition-all cursor-pointer">
         🔊 사운드: ON
       </button>
-      <button id="btnCopyHtml" class="px-3 py-1 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white text-xs font-bold rounded-lg shadow-md transition-all">
+      <button id="btnDownloadHtml" class="px-3 py-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold rounded-lg shadow-md transition-all cursor-pointer">
+        💾 .HTML 파일 다운로드
+      </button>
+      <button id="btnCopyHtml" class="px-3 py-1 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white text-xs font-bold rounded-lg shadow-md transition-all cursor-pointer">
         📋 단일 HTML 코드 복사
       </button>
     </div>
@@ -99,6 +94,54 @@
       </div>
     </div>
 
+    <!-- Mobile Virtual Controls -->
+    <div id="virtualControls" class="absolute inset-0 pointer-events-none z-20 flex justify-between items-end p-4">
+      <!-- Left D-Pad -->
+      <div class="pointer-events-auto flex gap-2">
+        <button id="btnLeft" class="w-14 h-14 bg-slate-900/80 border-2 border-slate-700 text-white font-black text-xl rounded-2xl flex items-center justify-center active:bg-rose-600 shadow-xl">◀</button>
+        <button id="btnDown" class="w-14 h-14 bg-slate-900/80 border-2 border-slate-700 text-white font-black text-xl rounded-2xl flex items-center justify-center active:bg-amber-600 shadow-xl">▼</button>
+        <button id="btnRight" class="w-14 h-14 bg-slate-900/80 border-2 border-slate-700 text-white font-black text-xl rounded-2xl flex items-center justify-center active:bg-rose-600 shadow-xl">▶</button>
+      </div>
+
+      <!-- Right Action Controls -->
+      <div class="pointer-events-auto flex flex-col items-end gap-2">
+        <!-- Top row: Interact [Z] -->
+        <button id="btnInteract" class="w-12 h-10 bg-amber-950/80 border-2 border-amber-500 text-amber-300 font-bold text-xs rounded-xl flex items-center justify-center active:bg-amber-500 active:text-white shadow-lg">[Z]상호작용</button>
+
+        <!-- Middle row: Weapons (Sword, Bow, Shield) -->
+        <div class="flex gap-2">
+          <button id="btnSword" class="w-14 h-14 bg-rose-950/90 border-2 border-rose-500 text-rose-200 font-black text-[11px] rounded-xl flex flex-col items-center justify-center active:bg-rose-600 shadow-lg">
+            <span>🗡️칼</span>
+            <span class="text-[9px] font-normal">[1]</span>
+          </button>
+          <button id="btnBow" class="w-14 h-14 bg-cyan-950/90 border-2 border-cyan-500 text-cyan-200 font-black text-[11px] rounded-xl flex flex-col items-center justify-center active:bg-cyan-600 shadow-lg">
+            <span>🏹활</span>
+            <span class="text-[9px] font-normal">[2]</span>
+          </button>
+          <button id="btnShield" class="w-14 h-14 bg-amber-950/90 border-2 border-amber-500 text-amber-200 font-black text-[11px] rounded-xl flex flex-col items-center justify-center active:bg-amber-600 shadow-lg">
+            <span>🛡️방패</span>
+            <span class="text-[9px] font-normal">[3]</span>
+          </button>
+        </div>
+
+        <!-- Bottom row: Large Jump, Dash, Potion (w-16 h-16) -->
+        <div class="flex gap-2">
+          <button id="btnPotion" class="w-16 h-16 bg-emerald-950/90 border-2 border-emerald-500 text-emerald-200 font-black text-xs rounded-2xl flex flex-col items-center justify-center active:bg-emerald-600 shadow-xl">
+            <span class="text-base">🧪</span>
+            <span>포션</span>
+          </button>
+          <button id="btnDash" class="w-16 h-16 bg-amber-950/90 border-2 border-amber-500 text-amber-200 font-black text-xs rounded-2xl flex flex-col items-center justify-center active:bg-amber-600 shadow-xl">
+            <span class="text-base">⚡</span>
+            <span>대시</span>
+          </button>
+          <button id="btnJump" class="w-16 h-16 bg-indigo-950/90 border-2 border-indigo-500 text-indigo-200 font-black text-xs rounded-2xl flex flex-col items-center justify-center active:bg-indigo-600 shadow-xl">
+            <span class="text-base">🦘</span>
+            <span>점프</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Title Screen Overlay -->
     <div id="titleScreen" class="absolute inset-0 bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-30">
       <div class="max-w-xl">
@@ -108,7 +151,7 @@
         <p class="text-xs sm:text-sm text-slate-400 mb-6">
           독립 실행형 2D 액션 로그라이크 - 11개의 바이옴과 3대 보스를 정복하세요!
         </p>
-        <button id="btnStartGame" class="px-8 py-4 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-black text-lg rounded-xl shadow-xl hover:scale-105 transition-all">
+        <button id="btnStartGame" class="px-8 py-4 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-black text-lg rounded-xl shadow-xl hover:scale-105 transition-all cursor-pointer">
           게임 시작하기
         </button>
         <div class="mt-6 text-xs text-slate-400 bg-slate-900/90 border border-slate-800 p-4 rounded-xl text-left">
@@ -117,10 +160,10 @@
             <li><strong>이동:</strong> A / D 또는 방향키 (좌우)</li>
             <li><strong>점프 / 이단점프:</strong> Space 또는 W / Up</li>
             <li><strong>구르기 (무적):</strong> Shift 또는 S / Down</li>
-            <li><strong>근접 공격 [1]:</strong> Z 키 (3연타 콤보)</li>
-            <li><strong>원거리 사역 [2]:</strong> X 키 (석궁 발사)</li>
-            <li><strong>패링 [3]:</strong> C 키 (방패 방어)</li>
-            <li><strong>상호작용 / 포션:</strong> F 키 (상자/포탈/대장간) / V 키 (체력 회복)</li>
+            <li><strong>근접 공격 [1]:</strong> Z / 1 키 (3연타 콤보)</li>
+            <li><strong>원거리 석궁 [2]:</strong> X / 2 키 (사격)</li>
+            <li><strong>방패 패링 [3]:</strong> C / 3 키 (방어)</li>
+            <li><strong>상호작용 / 포션:</strong> F / Z 키 (상자/포탈/대장간) / V / Q 키 (포션 회복)</li>
           </ul>
         </div>
       </div>
@@ -130,7 +173,7 @@
     <div id="gameOverScreen" class="hidden absolute inset-0 bg-rose-950/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-30">
       <h2 class="text-4xl font-black text-rose-500 mb-2">YOU DIED</h2>
       <p id="deathCauseText" class="text-sm text-slate-300 mb-6">몬스터에게 쓰러졌습니다.</p>
-      <button id="btnRestartGame" class="px-8 py-3 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl shadow-lg transition-all">
+      <button id="btnRestartGame" class="px-8 py-3 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl shadow-lg transition-all cursor-pointer">
         다시 도전하기
       </button>
     </div>
@@ -139,7 +182,7 @@
     <div id="victoryScreen" class="hidden absolute inset-0 bg-amber-950/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-30">
       <h2 class="text-4xl font-black text-amber-400 mb-2">VICTORY CLEAR!</h2>
       <p class="text-sm text-slate-200 mb-6">황금 왕좌의 국왕을 무찌르고 세계를 구원했습니다!</p>
-      <button id="btnVictoryRestart" class="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl shadow-lg transition-all">
+      <button id="btnVictoryRestart" class="px-8 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl shadow-lg transition-all cursor-pointer">
         처음부터 다시 하기
       </button>
     </div>
@@ -308,7 +351,7 @@
           osc.stop(now + 0.08);
         }
 
-        // Bass/Guitar Synth Note
+        // Bass Synth Note
         const notes = [82.41, 98.0, 110.0, 82.41, 123.47, 110.0, 146.83, 164.81];
         const freq = notes[step % notes.length];
         const gOsc = this.ctx.createOscillator();
@@ -327,16 +370,16 @@
     const sound = new SoundEngine();
 
     // ==========================================
-    // 2. GAME DATA & BIOMES
+    // 2. BIOMES DATA
     // ==========================================
     const BIOMES = [
       { name: 'Level 0: 유골의 은신처 (Safe Hub)', bg1: '#0f172a', bg2: '#020617', accent: '#38bdf8' },
       { name: 'Level 1: 수감자의 지하 감옥', bg1: '#064e3b', bg2: '#022c22', accent: '#10b981' },
       { name: 'Level 2: 성벽 회랑', bg1: '#7c2d12', bg2: '#180e0a', accent: '#f97316' },
-      { name: 'Level 3: 버려진 공동묘지', bg1: '#3b0764', bg2: '#0f051d', accent: '#a855f7' },
+      { name: 'Level 3: 버려진 미로 공동묘지', bg1: '#3b0764', bg2: '#0f051d', accent: '#a855f7' },
       { name: 'Level 4: 집행자의 처형장 [BOSS 1]', bg1: '#450a0a', bg2: '#180505', accent: '#ef4444' },
       { name: 'Level 5: 고대의 성채', bg1: '#164e63', bg2: '#083344', accent: '#06b6d4' },
-      { name: 'Level 6: 시계탑 회랑', bg1: '#78350f', bg2: '#1c1917', accent: '#f59e0b' },
+      { name: 'Level 6: 시계탑 미로 회랑', bg1: '#78350f', bg2: '#1c1917', accent: '#f59e0b' },
       { name: 'Level 7: 칠흑의 기사 성채 [BOSS 2]', bg1: '#2e1065', bg2: '#0a0412', accent: '#c084fc' },
       { name: 'Level 8: 마천루 산책로', bg1: '#1e3a8a', bg2: '#03112c', accent: '#60a5fa' },
       { name: 'Level 9: 왕실 요새', bg1: '#881337', bg2: '#1e050e', accent: '#f43f5e' },
@@ -366,6 +409,45 @@
       keys[e.code] = false;
     });
 
+    // Touch controls binding
+    const controls = {
+      left: false, right: false, down: false,
+      jump: false, dash: false, attack: false,
+      special: false, shield: false, potion: false, interact: false
+    };
+
+    function bindTouchBtn(id, keyProp) {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+      btn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        controls[keyProp] = true;
+        sound.init();
+      });
+      btn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        controls[keyProp] = false;
+      });
+      btn.addEventListener('mousedown', () => {
+        controls[keyProp] = true;
+        sound.init();
+      });
+      btn.addEventListener('mouseup', () => {
+        controls[keyProp] = false;
+      });
+    }
+
+    bindTouchBtn('btnLeft', 'left');
+    bindTouchBtn('btnRight', 'right');
+    bindTouchBtn('btnDown', 'down');
+    bindTouchBtn('btnJump', 'jump');
+    bindTouchBtn('btnDash', 'dash');
+    bindTouchBtn('btnSword', 'attack');
+    bindTouchBtn('btnBow', 'special');
+    bindTouchBtn('btnShield', 'shield');
+    bindTouchBtn('btnPotion', 'potion');
+    bindTouchBtn('btnInteract', 'interact');
+
     let gameState = 'TITLE'; // TITLE, PLAYING, GAME_OVER, VICTORY
     let currentLevel = 1;
 
@@ -373,11 +455,12 @@
       x: 100, y: 700, w: 32, h: 56,
       vx: 0, vy: 0,
       hp: 100, maxHp: 100,
-      facing: 1, isGrounded: true,
+      facing: 1, isGrounded: true, jumpCount: 0,
       cells: 0, potions: 1, maxPotions: 1,
       isRolling: false, rollTimer: 0,
-      attackTimer: 0, attackType: null,
-      parryTimer: 0,
+      attackTimer: 0, attackCombo: 0, attackType: null,
+      shieldActive: false,
+      isDrinkingPotion: false, potionTimer: 0,
       weapons: {
         sword: { lvl: 1, dmg: 35 },
         bow: { lvl: 1, dmg: 25 },
@@ -388,7 +471,6 @@
     let enemies = [];
     let platforms = [];
     let projectiles = [];
-    let particles = [];
     let interactives = [];
 
     // ==========================================
@@ -401,51 +483,67 @@
       player.vx = 0;
       player.vy = 0;
 
-      const width = 4000 + lvl * 300;
+      const isMaze = lvl === 3 || lvl === 6;
+      const width = isMaze ? 6000 : 4000 + lvl * 300;
+
+      // Solid Ground Floor
       platforms = [
         { x: 0, y: 810, w: width, h: 140, type: 'STONE' },
         { x: -40, y: 0, w: 40, h: 950, type: 'STONE' },
         { x: width, y: 0, w: 40, h: 950, type: 'STONE' },
       ];
 
-      // Mid platforms
-      for (let i = 0; i < 15; i++) {
-        platforms.push({
-          x: 300 + i * 260,
-          y: 660 - (i % 3) * 110,
-          w: 200, h: 16,
-          isPassThrough: true,
-          type: 'WOOD'
+      if (isMaze) {
+        // Multi-tiered Maze Corridors
+        [1050, 800, 550].forEach((yPos, idx) => {
+          platforms.push({ x: 300, y: yPos, w: width - 600, h: 20, isPassThrough: true, type: 'STONE' });
+          // Vertical Maze Blockades
+          for (let b = 0; b < 6; b++) {
+            platforms.push({ x: 700 + b * 800 + (idx % 2 * 300), y: yPos - 120, w: 25, h: 120, type: 'STONE' });
+          }
         });
+      } else {
+        // Standard Mid platforms
+        for (let i = 0; i < 18; i++) {
+          platforms.push({
+            x: 350 + i * 240,
+            y: 680 - (i % 3) * 110,
+            w: 180, h: 16,
+            isPassThrough: true,
+            type: 'WOOD'
+          });
+        }
       }
 
       enemies = [];
       if (lvl === 4) {
-        // Boss 1
         enemies.push({ id: 'boss1', type: 'BOSS_CONCIERGE', name: 'EXECUTIONER CONCIERGE', x: 1200, y: 680, w: 80, h: 120, hp: 1200, maxHp: 1200, vx: 0, vy: 0, facing: -1, attackCooldown: 0 });
       } else if (lvl === 7) {
-        // Boss 2
         enemies.push({ id: 'boss2', type: 'BOSS_KNIGHT', name: '칠흑의 기사단장', x: 1400, y: 680, w: 85, h: 125, hp: 2000, maxHp: 2000, vx: 0, vy: 0, facing: -1, attackCooldown: 0 });
       } else if (lvl === 10) {
-        // Final Boss
         enemies.push({ id: 'boss3', type: 'BOSS_KINGSHAND', name: '국왕의 손길 (HAND OF KING)', x: 1600, y: 660, w: 90, h: 140, hp: 3500, maxHp: 3500, vx: 0, vy: 0, facing: -1, attackCooldown: 0 });
       } else {
         // Standard Level Enemies
-        for (let i = 0; i < 10 + lvl; i++) {
+        const count = isMaze ? 55 : 35 + lvl * 3;
+        for (let i = 0; i < count; i++) {
           const type = i % 3 === 0 ? 'WALKER' : i % 3 === 1 ? 'ARCHER' : 'SHIELD';
+          const ex = 600 + (i * (width - 1000)) / count + (Math.random() * 40 - 20);
+          const ey = isMaze ? (i % 3 === 0 ? 750 : i % 3 === 1 ? 500 : 250) : 730;
+
           enemies.push({
             id: `e_${i}`, type,
             name: type === 'WALKER' ? '역병 좀비' : type === 'ARCHER' ? '석궁 궁수' : '중갑 수호자',
-            x: 600 + i * 280, y: 730,
-            w: 36, h: 54,
-            hp: 60 + lvl * 15, maxHp: 60 + lvl * 15,
-            vx: 0, vy: 0, facing: -1, stateTimer: 0, attackCooldown: 0
+            x: ex, y: ey, originX: ex, territoryRadius: 220,
+            w: type === 'SHIELD' ? 44 : 36, h: 54,
+            hp: 70 + lvl * 18, maxHp: 70 + lvl * 18,
+            vx: 0, vy: 0, facing: -1, attackCooldown: 0
           });
         }
       }
 
       interactives = [
-        { id: 'portal', x: width - 200, y: 730, w: 60, h: 80, label: `[F] Level ${lvl + 1} 진입` }
+        { id: 'chest', x: 300, y: 750, w: 50, h: 40, type: 'CHEST', opened: false, label: '[Z/F] 보물 상자 열기' },
+        { id: 'portal', x: width - 200, y: 730, w: 60, h: 80, type: 'PORTAL', label: `[Z/F] Level ${lvl + 1} 진입` }
       ];
 
       sound.startBGM(lvl);
@@ -458,56 +556,115 @@
     function update(dt) {
       if (gameState !== 'PLAYING') return;
 
-      // Player Movement
+      // Player Horizontal Movement
+      const moveLeft = keys['KeyA'] || keys['ArrowLeft'] || controls.left;
+      const moveRight = keys['KeyD'] || keys['ArrowRight'] || controls.right;
+      const holdDown = keys['KeyS'] || keys['ArrowDown'] || controls.down;
+
       const speed = 320;
-      if (keys['KeyA'] || keys['ArrowLeft']) {
+      if (holdDown && player.isGrounded) {
+        // Crouch / Hold position
+        player.vx = 0;
+      } else if (moveLeft) {
         player.vx = -speed;
         player.facing = -1;
-      } else if (keys['KeyD'] || keys['ArrowRight']) {
+      } else if (moveRight) {
         player.vx = speed;
         player.facing = 1;
       } else {
-        player.vx *= 0.7;
+        player.vx *= 0.65;
       }
 
-      // Jump
-      if ((keys['KeyW'] || keys['ArrowUp'] || keys['Space']) && player.isGrounded) {
-        player.vy = -680;
-        player.isGrounded = false;
+      // Jump (with Double Jump)
+      const pressJump = keys['KeyW'] || keys['ArrowUp'] || keys['Space'] || controls.jump;
+      if (pressJump) {
+        if (player.isGrounded) {
+          player.vy = -680;
+          player.isGrounded = false;
+          player.jumpCount = 1;
+          controls.jump = false;
+          keys['Space'] = false; keys['KeyW'] = false; keys['ArrowUp'] = false;
+        } else if (player.jumpCount === 1) {
+          player.vy = -600;
+          player.jumpCount = 2;
+          controls.jump = false;
+          keys['Space'] = false; keys['KeyW'] = false; keys['ArrowUp'] = false;
+        }
       }
 
-      // Roll
-      if ((keys['ShiftLeft'] || keys['KeyS'] || keys['ArrowDown']) && !player.isRolling && player.rollTimer <= 0) {
+      // Roll / Dash
+      const pressDash = keys['ShiftLeft'] || controls.dash;
+      if (pressDash && !player.isRolling && player.rollTimer <= 0) {
         player.isRolling = true;
         player.rollTimer = 0.4;
-        player.vx = player.facing * 520;
+        player.vx = player.facing * 550;
+        controls.dash = false;
+        keys['ShiftLeft'] = false;
       }
       if (player.rollTimer > 0) player.rollTimer -= dt;
       if (player.rollTimer <= 0) player.isRolling = false;
 
-      // Attacks
-      if (keys['KeyZ'] && player.attackTimer <= 0) {
-        player.attackTimer = 0.25;
+      // Potion Drink
+      const pressPotion = keys['KeyV'] || keys['KeyQ'] || controls.potion;
+      if (pressPotion && player.potions > 0 && player.hp < player.maxHp && !player.isDrinkingPotion) {
+        player.potions--;
+        player.hp = Math.min(player.maxHp, player.hp + 60);
+        player.isDrinkingPotion = true;
+        player.potionTimer = 0.8;
+        sound.playCellPickup();
+        controls.potion = false;
+      }
+      if (player.potionTimer > 0) player.potionTimer -= dt;
+      if (player.potionTimer <= 0) player.isDrinkingPotion = false;
+
+      // Weapon 1: Sword Combo [Z / 1]
+      const pressSword = keys['KeyZ'] || keys['Digit1'] || controls.attack;
+      if (pressSword && player.attackTimer <= 0) {
+        player.attackTimer = 0.22;
         player.attackType = 'SWORD';
         sound.playSlash();
-        // Melee hit test
+        controls.attack = false;
+
         enemies.forEach(e => {
-          if (Math.abs(e.x - player.x) < 90 && Math.abs(e.y - player.y) < 60) {
+          if (e.hp <= 0) return;
+          const dx = Math.abs((player.x + player.w / 2) - (e.x + e.w / 2));
+          const dy = Math.abs((player.y + player.h / 2) - (e.y + e.h / 2));
+          if (dx < 100 && dy < 60) {
             e.hp -= player.weapons.sword.dmg;
             sound.playHit();
             if (e.hp <= 0) player.cells += 3;
           }
         });
       }
-      if (keys['KeyX'] && player.attackTimer <= 0) {
-        player.attackTimer = 0.4;
+
+      // Weapon 2: Bow Crossbow [X / 2]
+      const pressBow = keys['KeyX'] || keys['Digit2'] || controls.special;
+      if (pressBow && player.attackTimer <= 0) {
+        player.attackTimer = 0.35;
         player.attackType = 'BOW';
         sound.playBow();
-        projectiles.push({ x: player.x + player.facing * 20, y: player.y + 20, vx: player.facing * 750, vy: 0, isPlayer: true, damage: player.weapons.bow.dmg });
+        controls.special = false;
+
+        projectiles.push({
+          x: player.x + (player.facing === 1 ? player.w : -24),
+          y: player.y + 20,
+          w: 24, h: 8,
+          vx: player.facing * 780, vy: 0,
+          isPlayer: true, damage: player.weapons.bow.dmg
+        });
       }
+
+      // Weapon 3: Shield Block/Parry [C / 3]
+      const pressShield = keys['KeyC'] || keys['Digit3'] || controls.shield;
+      if (pressShield) {
+        player.shieldActive = true;
+      } else {
+        player.shieldActive = false;
+      }
+
       if (player.attackTimer > 0) player.attackTimer -= dt;
 
-      // Gravity & Physics
+      // Physics & Gravity
       player.vy += 1600 * dt;
       player.x += player.vx * dt;
       player.y += player.vy * dt;
@@ -519,6 +676,7 @@
           player.y = p.y - player.h;
           player.vy = 0;
           player.isGrounded = true;
+          player.jumpCount = 0;
         }
       });
 
@@ -526,10 +684,11 @@
       for (let i = projectiles.length - 1; i >= 0; i--) {
         const pr = projectiles[i];
         pr.x += pr.vx * dt;
-        pr.y += pr.vy * dt;
+        pr.y += (pr.vy || 0) * dt;
 
         if (pr.isPlayer) {
           enemies.forEach(e => {
+            if (e.hp <= 0) return;
             if (pr.x > e.x && pr.x < e.x + e.w && pr.y > e.y && pr.y < e.y + e.h) {
               e.hp -= pr.damage;
               sound.playHit();
@@ -539,14 +698,35 @@
         }
       }
 
-      // Update Enemies
+      // Update Enemies (Territorial Patrol & Short Detection Radius)
       enemies.forEach(e => {
         if (e.hp <= 0) return;
-        const dx = player.x - e.x;
-        e.facing = dx > 0 ? 1 : -1;
+        if (e.originX === undefined) e.originX = e.x;
 
-        if (Math.abs(dx) > 60 && Math.abs(dx) < 600) {
-          e.x += e.facing * 120 * dt;
+        const dx = player.x - e.x;
+        const dist = Math.abs(dx);
+        const distFromOrigin = Math.abs(e.x - e.originX);
+        const isBoss = e.type.startsWith('BOSS');
+
+        if (isBoss) {
+          e.facing = dx > 0 ? 1 : -1;
+          if (dist > 60 && dist < 1000) {
+            e.x += e.facing * 140 * dt;
+          }
+        } else {
+          // Short detection radius (~200px) and territory radius (~220px)
+          if (dist < 200 && distFromOrigin < 220) {
+            e.facing = dx > 0 ? 1 : -1;
+            if (dist > 50) {
+              e.x += e.facing * 120 * dt;
+            }
+          } else {
+            // Return to territory origin
+            if (distFromOrigin > 200) {
+              e.facing = e.x > e.originX ? -1 : 1;
+              e.x += e.facing * 60 * dt;
+            }
+          }
         }
 
         // Prevent Player & Enemy Overlap!
@@ -554,26 +734,35 @@
           if (player.x < e.x) player.x = e.x - 40;
           else player.x = e.x + 40;
 
-          if (!player.isRolling) {
-            player.hp -= 0.1;
+          if (!player.isRolling && !player.shieldActive) {
+            player.hp -= 0.15;
           }
         }
       });
 
       // Interactables
-      if (keys['KeyF']) {
+      const pressInteract = keys['KeyF'] || controls.interact;
+      if (pressInteract) {
         interactives.forEach(it => {
           if (Math.abs(player.x - it.x) < 80) {
-            if (currentLevel < 10) loadLevel(currentLevel + 1);
-            else gameState = 'VICTORY';
+            if (it.type === 'PORTAL') {
+              if (currentLevel < 10) loadLevel(currentLevel + 1);
+              else gameState = 'VICTORY';
+            } else if (it.type === 'CHEST' && !it.opened) {
+              it.opened = true;
+              player.cells += 10;
+              sound.playCellPickup();
+            }
           }
         });
+        controls.interact = false;
       }
 
       // UI Update
       document.getElementById('hpText').textContent = `${Math.max(0, Math.round(player.hp))} / ${player.maxHp}`;
       document.getElementById('hpBar').style.width = `${Math.max(0, (player.hp / player.maxHp) * 100)}%`;
       document.getElementById('cellText').textContent = player.cells;
+      document.getElementById('potionText').textContent = `${player.potions} / ${player.maxPotions}`;
 
       // Boss Gauge
       const activeBoss = enemies.find(e => e.type.startsWith('BOSS') && e.hp > 0);
@@ -618,7 +807,7 @@
 
       // Render Interactives
       interactives.forEach(it => {
-        ctx.fillStyle = '#f59e0b';
+        ctx.fillStyle = it.type === 'CHEST' ? (it.opened ? '#475569' : '#f59e0b') : '#06b6d4';
         ctx.fillRect(it.x, it.y, it.w, it.h);
         ctx.fillStyle = '#fff';
         ctx.font = '12px sans-serif';
@@ -628,7 +817,7 @@
       // Render Projectiles
       projectiles.forEach(pr => {
         ctx.fillStyle = '#fef08a';
-        ctx.fillRect(pr.x, pr.y, 16, 6);
+        ctx.fillRect(pr.x, pr.y, pr.w || 16, pr.h || 6);
       });
 
       // Render Enemies
@@ -644,15 +833,32 @@
         ctx.fillRect(e.x, e.y - 12, (e.hp / e.maxHp) * e.w, 6);
       });
 
-      // Render Player
-      ctx.fillStyle = player.isRolling ? '#06b6d4' : '#f43f5e';
-      ctx.fillRect(player.x, player.y, player.w, player.h);
+      // Render Player (Dark Armor + Scarf + Helmet Visor)
+      ctx.fillStyle = player.isRolling ? '#06b6d4' : '#1e293b';
+      ctx.fillRect(player.x, player.y + 16, player.w, player.h - 16);
 
-      // Player Head Glowing Eye
+      // Scarf
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(player.facing === 1 ? player.x - 8 : player.x + player.w, player.y + 20, 8, 22);
+
+      // Helmet
+      ctx.fillStyle = '#334155';
+      ctx.fillRect(player.x + 4, player.y, player.w - 8, 18);
+
+      // Visor
       ctx.fillStyle = '#38bdf8';
       ctx.beginPath();
-      ctx.arc(player.x + (player.facing === 1 ? 22 : 10), player.y + 14, 4, 0, Math.PI * 2);
+      ctx.arc(player.x + (player.facing === 1 ? 22 : 10), player.y + 8, 4, 0, Math.PI * 2);
       ctx.fill();
+
+      // Shield Aura
+      if (player.shieldActive) {
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(player.x + player.w / 2, player.y + player.h / 2, 32, 0, Math.PI * 2);
+        ctx.stroke();
+      }
 
       ctx.restore();
     }
@@ -688,7 +894,18 @@
       document.getElementById('victoryScreen').classList.add('hidden');
       player.hp = 100;
       gameState = 'PLAYING';
-      loadLevel(1);  
+      loadLevel(1);
+    });
+
+    document.getElementById('btnFullscreen').addEventListener('click', () => {
+      const el = canvas.parentElement;
+      if (!document.fullscreenElement) {
+        if (el.requestFullscreen) el.requestFullscreen();
+        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      }
     });
 
     document.getElementById('btnAudioToggle').addEventListener('click', () => {
@@ -696,6 +913,19 @@
       document.getElementById('btnAudioToggle').textContent = sound.enabled ? '🔊 사운드: ON' : '🔇 사운드: OFF';
       if (!sound.enabled) sound.stopBGM();
       else if (gameState === 'PLAYING') sound.startBGM(currentLevel);
+    });
+
+    document.getElementById('btnDownloadHtml').addEventListener('click', () => {
+      const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'deadcells-complete-game.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     });
 
     document.getElementById('btnCopyHtml').addEventListener('click', () => {
